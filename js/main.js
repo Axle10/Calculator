@@ -22,9 +22,17 @@ $(document).ready(function() {
             case "-":
             case "*":
             case "/":
+                if(document.getElementById('textarea').value === 'Syntax error')
+                {
+                    document.getElementById('textarea').value = '';      
+                }
                 document.getElementById('textarea').value+=buttonval;
                 break;
             case "0":
+                if(document.getElementById('textarea').value === 'Syntax error')
+                {
+                    document.getElementById('textarea').value = '';      
+                }
                 if(document.getElementById('textarea').value != '')
                 {   
                     document.getElementById('textarea').value+=buttonval;
@@ -60,20 +68,102 @@ $(document).ready(function() {
                     {
                         document.getElementById('textarea').value='Syntax error';
                     }
-                    else if(i!= str.length-1 && ( str[i] === '+' || str[i] === '-' || str[i] === '*' || str[i] === '/') && ( str[i+1] === '+' || str[i+1] === '-' || str[i+1] === '*' || str[i+1] === '/'))
+                    if((str[i] === '+' || str[i] === '-' || str[i] === '*' || str[i] === '/' ) && ( str[i+1] === '+' || str[i+1] === '-' || str[i+1] === '*' || str[i+1] === '/'))
                     {
                         document.getElementById('textarea').value='Syntax error';
                     }
+                    if(i==str.length-1)
+                    {
+                        if(str[i] === '+' || str[i] === '-' || str[i] === '*' || str[i] === '/')
+                        {
+                            document.getElementById('textarea').value='Syntax error';
+                        }
+                        else
+                        {
+                            str_splitted[j]=parseFloat(str.substring(k));
+                        }
+                    }
                     if(i !=0 && ( str[i] === '+' || str[i] === '-' || str[i] === '*' || str[i] === '/'))
                     {
-                        str_splitted[j]=str.substring(k,i-1);
+                        str_splitted[j]=parseFloat(str.substring(k,i));
                         operator[j]=str[i];
                         j++;
                         k=i+1; 
                     }
+                    
                 }
+            
                 console.log(str_splitted);
                 console.log(operator);
+                
+                for(var i=0;i< operator.length;i++)
+                {
+                    if(operator[i] === '/')
+                    {
+                        console.log(str_splitted[i]);
+                        console.log(str_splitted[i+1]);
+                        var num1=str_splitted[i];
+                        var num2=str_splitted[i+1];
+
+                        var res=num1/num2;
+                        console.log(num1);
+                        console.log(num2);
+                        console.log(res);
+
+                        str_splitted[i]=res;
+                        str_splitted.splice(i+1,1);
+                        operator.splice(i,1);
+                        // document.getElementById('textarea').value += '\n'+res;
+                        console.log(str_splitted);
+                        console.log(operator);
+
+
+                    }
+                    if(operator.indexOf('/')==-1)
+                    {
+                        if(operator[i] === '*')
+                        {
+                            var num1=str_splitted[i];
+                            var num2=str_splitted[i+1];
+
+                            var res=num1*num2;
+                            str_splitted[i]=res;
+                            str_splitted.splice(i+1,1);
+                            operator.splice(i,1);
+
+                        }
+                    }
+                    if(operator.indexOf('/')==-1 && operator.indexOf('*') ==-1)
+                    {
+                        if(operator[i] === '+')
+                        {
+                            var num1=str_splitted[i];
+                            var num2=str_splitted[i+1];
+
+                            var res=num1+num2;
+                            str_splitted[i]=res;
+                            str_splitted.splice(i+1,1);
+                            operator.splice(i,1);
+
+                        }
+                    }
+                    if(operator.indexOf('/')==-1 && operator.indexOf('*') ==-1 && operator.indexOf('+') ==-1)
+                    {
+                        if(operator[i] === '-')
+                        {
+                            var num1=str_splitted[i];
+                            var num2=str_splitted[i+1];
+
+                            var res=num1-num2;
+                            str_splitted[i]=res;
+                            str_splitted.splice(i+1,1);
+                            operator.splice(i,1);
+
+                        }
+                    }
+                }
+                console.log(str_splitted);
+                document.getElementById('textarea').vaule += '\n'+ str_splitted[0];
         }
     });
 });
