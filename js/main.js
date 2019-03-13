@@ -163,7 +163,7 @@ $(document).ready(function() {
                     }
                 }
                 console.log(str_splitted);
-                document.getElementById('textarea').vaule += '\n'+ str_splitted[0];
+                document.getElementById('textarea').value += '\n'+ str_splitted;
         }
     });
 });
